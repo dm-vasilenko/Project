@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Pavel Usachev <webcodekeeper@hotmail.com>
+ * @copyright Copyright (c) 2019, Pavel Usachev
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Thesis_QuickOrder::css/product.css"/>
+    </head>
+    <body>
+        <referenceBlock name="product.info" template="Thesis_QuickOrder::product/addtoquickorder.phtml">
+            <block
+                    class="Thesis\QuickOrder\Block\QuickOrder"
+                    name="mainquickorder"
+                    as="mainquick"
+                    template="Thesis_QuickOrder::order.phtml"
+            >
+            </block>
+        </referenceBlock>
+    </body>
+</page>

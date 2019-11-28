@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+                id="Thesis_QuickOrder::all"
+                title="Quick Order"
+                translate="title"
+                module="Thesis_QuickOrder"
+                sortOrder="20"
+                dependsOnModule="Thesis_QuickOrder"
+                resource="Thesis_QuickOrder::all"
+        />
+        <add
+                id="Thesis_QuickOrder::grid"
+                title="Order Grid"
+                translate="title"
+                module="Thesis_QuickOrder"
+                sortOrder="10"
+                parent="Thesis_QuickOrder::all"
+                action="quickorder/index/listing"
+                resource="Thesis_QuickOrder::grid"
+        />
+        <add
+                id="Thesis_QuickOrder::status"
+                title="Status Grid"
+                translate="title"
+                module="Thesis_QuickOrder"
+                sortOrder="11"
+                parent="Thesis_QuickOrder::all"
+                action="quickorder/index/statuslisting"
+                resource="Thesis_QuickOrder::status"
+        />
+    </menu>
+</config>
