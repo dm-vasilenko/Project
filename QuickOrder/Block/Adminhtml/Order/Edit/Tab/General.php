@@ -46,7 +46,7 @@ class General extends AbstractTab
                 'name'      => QuickOrderInterface::SKU_COL_NAME,
                 'label'     => __('Sku'),
                 'required'  => true,
-                'visible'   => false
+                'visible'   => false,
             ]
         );
 
@@ -69,13 +69,23 @@ class General extends AbstractTab
                 'required'  => false
             ]
         );
+        $fieldSet->addField(
+            QuickOrderInterface::STATUS_COL_NAME,
+            'text',
+            [
+                'name'      => QuickOrderInterface::STATUS_COL_NAME,
+                'label'     => __('Status'),
+                'required'  => false,
+                'visible'   => false,
+            ]
+        );
 
         $fieldSet->addField(
             QuickOrderInterface::CREATED_AT_COL_NAME,
             'date',
             [
                 'name'          => QuickOrderInterface::CREATED_AT_COL_NAME,
-                'label'         => __('Create At'),
+                'label'         => __('Start'),
                 'date_format'   => 'yyyy-MM-dd',
                 'time_format'   => 'hh:mm:ss',
                 'required'      => true
@@ -87,7 +97,7 @@ class General extends AbstractTab
             'date',
             [
                 'name'          => QuickOrderInterface::UPDATED_AT_COL_NAME,
-                'label'         => __('Update At'),
+                'label'         => __('End'),
                 'date_format'   => 'yyyy-MM-dd',
                 'time_format'   => 'hh:mm:ss',
                 'required'      => true
