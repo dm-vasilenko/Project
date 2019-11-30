@@ -46,8 +46,15 @@ class Save extends Action
      * @param QuickOrderInterfaceFactory $orderModelFactory
      * @param LoggerInterface $logger
      */
-    public function __construct(Context $context, PageFactory $resultPageFactory, StatusInterfaceFactory $statusModelFactory, StatusFactory $statusResourceFactory, QuickOrderRepositoryInterface $repository, QuickOrderInterfaceFactory $orderModelFactory, LoggerInterface $logger)
-    {
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory,
+        StatusInterfaceFactory $statusModelFactory,
+        StatusFactory $statusResourceFactory,
+        QuickOrderRepositoryInterface $repository,
+        QuickOrderInterfaceFactory $orderModelFactory,
+        LoggerInterface $logger
+    ) {
         $this->statusModelFactory    =  $statusModelFactory;
         $this->statusResourceFactory =  $statusResourceFactory;
         $this->repository            =  $repository;

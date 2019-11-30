@@ -43,7 +43,7 @@ class Actions extends Column
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
                 if (isset($item['order_id'])) {
-                    $item[$name]['SUCHKA'] = [
+                    $item[$name]['edit'] = [
                         'href' => $this->urlBuilder->getUrl($this->editUrl, ['id' => $item['order_id']]),
                         'label' => __('Edit')
                     ];
@@ -51,8 +51,8 @@ class Actions extends Column
                         'href' => $this->urlBuilder->getUrl(self::URL_PATH_DELETE, ['id' => $item['order_id']]),
                         'label' => __('Delete'),
                         'confirm' => [
-                            'title' => __('Delete "${ $.$data.title }"'),
-                            'message' => __('Are you sure you wan\'t to delete a "${ $.$data.title }" record?')
+                            'title' => __('Delete "${ $.$data.order_id }"'),
+                            'message' => __('Are you sure you wan\'t to delete a "${ $.$data.order_id }" record?')
                         ]
                     ];
                 }
