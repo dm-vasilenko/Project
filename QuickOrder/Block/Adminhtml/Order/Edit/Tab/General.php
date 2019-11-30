@@ -85,7 +85,7 @@ class General extends AbstractTab
             'date',
             [
                 'name'          => QuickOrderInterface::CREATED_AT_COL_NAME,
-                'label'         => __('Start'),
+                'label'         => __('Create At'),
                 'date_format'   => 'yyyy-MM-dd',
                 'time_format'   => 'hh:mm:ss',
                 'required'      => true
@@ -97,7 +97,7 @@ class General extends AbstractTab
             'date',
             [
                 'name'          => QuickOrderInterface::UPDATED_AT_COL_NAME,
-                'label'         => __('End'),
+                'label'         => __('Update At'),
                 'date_format'   => 'yyyy-MM-dd',
                 'time_format'   => 'hh:mm:ss',
                 'required'      => true
