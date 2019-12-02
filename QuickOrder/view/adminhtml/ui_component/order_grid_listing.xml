@@ -80,7 +80,7 @@
                         <item name="type" xsi:type="string">edit</item>
                         <item name="label" xsi:type="string" translate="true">Edit</item>
                         <item name="callback" xsi:type="array">
-                            <item name="provider" xsi:type="string">order_grid_listing.news_grid_listing.order_grid_columns_editor</item>
+                            <item name="provider" xsi:type="string">order_grid_listing.order_grid_listing.order_grid_columns_editor</item>
                             <item name="target" xsi:type="string">editSelected</item>
                         </item>
                     </item>

@@ -76,7 +76,7 @@ class General extends AbstractTab
                 'name'      => QuickOrderInterface::STATUS_COL_NAME,
                 'label'     => __('Status'),
                 'required'  => false,
-                'visible'   => false,
+                'visible'   => false
             ]
         );
 

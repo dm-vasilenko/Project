@@ -16,6 +16,7 @@ interface QuickOrderInterface
     const EMAIL_COL_NAME        = 'email';
     const CREATED_AT_COL_NAME   = 'created_at';
     const UPDATED_AT_COL_NAME   = 'updated_at';
+    const STATUS_COL_NAME       = 'status';
     /**
      * @return int|null
      */
