@@ -5,6 +5,7 @@ namespace Thesis\QuickOrder\Block\Adminhtml\Status\Edit;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\StatusRepositoryInterface;
 
 /**
@@ -13,6 +14,11 @@ use Thesis\QuickOrder\Api\Model\StatusRepositoryInterface;
  */
 class StatusButton
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     /**
      * @var Context
      */
@@ -26,15 +32,18 @@ class StatusButton
     /**
      * StatusButton constructor.
      *
-     * @param Context                   $context
+     * @param Context $context
      * @param StatusRepositoryInterface $repository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
-        StatusRepositoryInterface $repository
+        StatusRepositoryInterface $repository,
+        LoggerInterface $logger
     ) {
         $this->context      = $context;
         $this->repository   = $repository;
+        $this->logger       = $logger;
     }
 
     /**
@@ -49,6 +58,7 @@ class StatusButton
                 $this->context->getRequest()->getParam('id')
             )->getId();
         } catch (NoSuchEntityException $e) {
+            $this->logger->error($e->getMessage());
         }
         return null;
     }

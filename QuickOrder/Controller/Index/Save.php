@@ -90,11 +90,12 @@ class Save extends Action
         );
 
         try {
+            $numberKey = '#^[0-9-+]+$#';
             if (!\Zend_Validate::is(trim($params['name']), 'NotEmpty')) {
                 throw new LocalizedException(__('Enter the Name and try again.'));
             }
-            if (!\Zend_Validate::is(trim($params['phone']), 'NotEmpty')) {
-                throw new LocalizedException(__('Enter the phone and try again.'));
+            if (!\Zend_Validate::is(trim($params['phone']), 'NotEmpty') || !preg_match($numberKey, $params['phone'])) {
+                throw new LocalizedException(__('Enter the valid phone number and try again.'));
             }
             if (!\Zend_Validate::is(trim(
                 $params['email']

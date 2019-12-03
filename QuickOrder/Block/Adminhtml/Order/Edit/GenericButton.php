@@ -5,6 +5,7 @@ namespace Thesis\QuickOrder\Block\Adminhtml\Order\Edit;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 
 /**
@@ -14,12 +15,17 @@ use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 class GenericButton
 {
     /**
-     * @var Context 
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var Context
      */
     protected $context;
 
     /**
-     * @var QuickOrderRepositoryInterface 
+     * @var QuickOrderRepositoryInterface
      */
     protected $repository;
 
@@ -31,10 +37,12 @@ class GenericButton
      */
     public function __construct(
         Context $context,
-        QuickOrderRepositoryInterface $repository
+        QuickOrderRepositoryInterface $repository,
+        LoggerInterface $logger
     ) {
         $this->context      = $context;
         $this->repository   = $repository;
+        $this->logger       = $logger;
     }
 
     /**
@@ -49,6 +57,7 @@ class GenericButton
                 $this->context->getRequest()->getParam('id')
             )->getId();
         } catch (NoSuchEntityException $e) {
+            $this->logger->error($e->getMessage());
         }
         return null;
     }
