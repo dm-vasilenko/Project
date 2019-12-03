@@ -2,6 +2,8 @@
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
@@ -72,13 +74,30 @@ class Save extends BaseAction
             $model->setData($formData);
             $model->setStatus($statusModel);
             try {
+                $numberKey = '#^[0-9-+]+$#';
+                if (!\Zend_Validate::is(trim($formData['name']), 'NotEmpty') || strlen($formData['name']) > 20 ) {
+                    throw new LocalizedException(__('Enter the valid Name and try again.'));
+                }
+                if (!\Zend_Validate::is(trim($formData['phone']), 'NotEmpty') || !strlen($formData['phone']) > 20 || !preg_match($numberKey, $formData['phone'])) {
+                    throw new LocalizedException(__('Enter the valid phone number and try again.'));
+                }
+                if (!\Zend_Validate::is(trim(
+                    $formData['email']
+                ), 'EmailAddress') && !empty($formData['email'])) {
+                    throw new LocalizedException(
+                        __('The email address is invalid. Verify the email address and try again.')
+                    );
+                }
                 $this->repository->save($model);
                 $this->messageManager->addSuccessMessage(__('Order has been saved.'));
 
                 return $this->redirectToGrid();
-            } catch (\Exception $e) {
+            } catch (CouldNotSaveException $e) {
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage(__('Order doesn\'t save'));
+            } catch (LocalizedException $e) {
+                $this->logger->error($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
         return $this->doRefererRedirect();

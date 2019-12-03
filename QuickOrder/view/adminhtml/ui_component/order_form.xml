@@ -138,52 +138,5 @@
                 </validation>
             </settings>
         </field>
-
-        <field name="created_at">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string">Created at</item>
-                    <item name="require" xsi:type="boolean">true</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">order</item>
-                    <item name="formElement" xsi:type="string">date</item>
-                    <item name="dataScope" xsi:type="string">created_at</item>
-                    <item name="options" xsi:type="array">
-                        <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
-                        <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
-                        <item name="showsTime" xsi:type="boolean">true</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">false</rule>
-                </validation>
-            </settings>
-        </field>
-
-        <field name="updated_at">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string">Updated at</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">order</item>
-                    <item name="formElement" xsi:type="string">date</item>
-                    <item name="require" xsi:type="boolean">true</item>
-                    <item name="dataScope" xsi:type="string">updated_at</item>
-                    <item name="options" xsi:type="array">
-                        <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
-                        <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
-                        <item name="showsTime" xsi:type="boolean">true</item>
-                    </item>
-                </item>
-            </argument>
-            <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">false</rule>
-                </validation>
-            </settings>
-        </field>
-
     </fieldset>
 </form>
