@@ -2,11 +2,13 @@
 
 namespace Thesis\QuickOrder\UI\Component\Listing\Column;
 
+use Magento\Framework\Data\OptionSourceInterface;
+
 /**
- * Class ActionsSelect
+ * Class ActionsStatusSelect
  * @package Thesis\QuickOrder\UI\Component\Listing\Column
  */
-class ActionsSelect implements \Magento\Framework\Option\ArrayInterface
+class ActionsStatusSelect implements OptionSourceInterface
 {
     /**
      * @return array

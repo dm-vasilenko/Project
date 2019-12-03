@@ -2,7 +2,6 @@
 
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
-use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
 use Thesis\QuickOrder\Controller\Adminhtml\Status as BaseAction;
 
 /**
@@ -24,11 +23,11 @@ class StatusSave extends BaseAction
                 $formData = $this->getRequest()->getParams();
             }
 
-            if (!empty($formData[StatusInterface::ID_FIELD])) {
-                $id = $formData[StatusInterface::ID_FIELD];
+            if (!empty($formData['status_id'])) {
+                $id = $formData['status_id'];
                 $model = $this->repository->getById($id);
             } else {
-                unset($formData[StatusInterface::ID_FIELD]);
+                unset($formData['status_id']);
             }
 
             $model->setData($formData);

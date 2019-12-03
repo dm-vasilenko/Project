@@ -2,8 +2,6 @@
 
 namespace Thesis\QuickOrder\Api\Model;
 
-use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Data\SearchResultInterface;
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
 
 /**
@@ -19,12 +17,6 @@ interface QuickOrderRepositoryInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getById(int $id);
-
-    /**
-     * @param  SearchCriteriaInterface $searchCriteria
-     * @return SearchResultInterface
-     */
-    public function getList(SearchCriteriaInterface $searchCriteria);
 
     /**
      * @param  QuickOrderInterface $quickorder

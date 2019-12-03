@@ -6,7 +6,6 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
-use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
 use Thesis\QuickOrder\Api\Model\Data\StatusInterfaceFactory;
 use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 use Thesis\QuickOrder\Controller\Adminhtml\Order as BaseAction;
@@ -59,11 +58,11 @@ class Save extends BaseAction
             if (empty($formData)) {
                 $formData = $this->getRequest()->getParams();
             }
-            if (!empty($formData[QuickOrderInterface::ID_FIELD])) {
-                $id = $formData[QuickOrderInterface::ID_FIELD];
+            if (!empty($formData['order_id'])) {
+                $id = $formData['order_id'];
                 $model = $this->repository->getById($id);
             } else {
-                unset($formData[QuickOrderInterface::ID_FIELD]);
+                unset($formData['order_id']);
             }
             /**
              * @var \Thesis\QuickOrder\Model\Status $statusModel
@@ -75,7 +74,7 @@ class Save extends BaseAction
             $model->setStatus($statusModel);
             try {
                 $numberKey = '#^[0-9-+]+$#';
-                if (!\Zend_Validate::is(trim($formData['name']), 'NotEmpty') || strlen($formData['name']) > 20 ) {
+                if (!\Zend_Validate::is(trim($formData['name']), 'NotEmpty') || strlen($formData['name']) > 20) {
                     throw new LocalizedException(__('Enter the valid Name and try again.'));
                 }
                 if (!\Zend_Validate::is(trim($formData['phone']), 'NotEmpty') || !strlen($formData['phone']) > 20 || !preg_match($numberKey, $formData['phone'])) {

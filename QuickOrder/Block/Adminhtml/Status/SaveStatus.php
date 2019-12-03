@@ -1,14 +1,15 @@
 <?php
 
-namespace Thesis\QuickOrder\Block\Adminhtml\Order\Edit;
+namespace Thesis\QuickOrder\Block\Adminhtml\Status;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 /**
- * Class SaveButton
- * @package Thesis\QuickOrder\Block\Adminhtml\Order\Edit
+ * Class SaveStatus
+ *
+ * @package Thesis\QuickOrder\Block\Adminhtml\Status
  */
-class SaveButton extends GenericButton implements ButtonProviderInterface
+class SaveStatus implements ButtonProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -16,7 +17,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => __('Save Order'),
+            'label' => __('Save Status'),
             'class' => 'save primary',
             'data_attribute' => [
                 'mage-init' => ['button' => ['event' => 'save']],

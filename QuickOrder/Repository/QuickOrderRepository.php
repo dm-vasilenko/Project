@@ -3,8 +3,6 @@
 namespace Thesis\QuickOrder\Repository;
 
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Data\SearchResultInterface;
 
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -13,7 +11,6 @@ use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterfaceFactory;
 
-use Thesis\QuickOrder\Api\Model\Data\QuickOrderSearchResultInterfaceFactory;
 use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 use Thesis\QuickOrder\Model\ResourceModel\QuickOrder as ResourceModel;
 use Thesis\QuickOrder\Model\ResourceModel\QuickOrder\CollectionFactory;
@@ -41,10 +38,6 @@ class QuickOrderRepository implements QuickOrderRepositoryInterface
      */
     private $collectionProcessor;
     /**
-     * @var QuickOrderSerachResultInterfaceFactory
-     */
-    private $searchResultFactory;
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -53,7 +46,6 @@ class QuickOrderRepository implements QuickOrderRepositoryInterface
      * @param ResourceModel $resourceModel
      * @param QuickOrderInterfaceFactory $quickOrderInterfaceFactory
      * @param CollectionFactory $collectionFactory
-     * @param QuickOrderSearchResultInterfaceFactory $searchResultFactory
      * @param CollectionProcessorInterface $collectionProcessor
      * @param LoggerInterface $logger
      */
@@ -61,17 +53,16 @@ class QuickOrderRepository implements QuickOrderRepositoryInterface
         ResourceModel $resourceModel,
         QuickOrderInterfaceFactory $quickOrderInterfaceFactory,
         CollectionFactory $collectionFactory,
-        QuickOrderSearchResultInterfaceFactory $searchResultFactory,
         CollectionProcessorInterface $collectionProcessor,
         LoggerInterface $logger
     ) {
         $this->resourceModel        = $resourceModel;
         $this->modelFactory         = $quickOrderInterfaceFactory;
         $this->collectionFactory    = $collectionFactory;
-        $this->searchResultFactory  = $searchResultFactory;
         $this->collectionProcessor  = $collectionProcessor;
         $this->logger               = $logger;
     }
+
     /**
      * @param int $id
      * @return QuickOrderInterface
@@ -89,24 +80,7 @@ class QuickOrderRepository implements QuickOrderRepositoryInterface
 
         return $model;
     }
-    /**
-     * @param SearchCriteriaInterface $searchCriteria
-     * @return SearchResultInterface
-     */
-    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultInterface
-    {
-        $collection = $this->collectionFactory->create();
 
-        $this->collectionProcessor->process($searchCriteria, $collection);
-
-        $searchResult = $this->searchResultFactory->create();
-
-        $searchResult->setTotalCount($collection->getSize());
-        $searchResult->setSearchCriteria($searchCriteria);
-        $searchResult->setItems($collection->getData());
-
-        return $searchResult;
-    }
     /**
      * @param QuickOrderInterface $quickOrder
      * @return QuickOrderRepositoryInterface
@@ -123,6 +97,7 @@ class QuickOrderRepository implements QuickOrderRepositoryInterface
 
         return  $this;
     }
+
     /**
      * @param QuickOrderInterface $quickOrder
      * @return QuickOrderRepositoryInterface
@@ -138,6 +113,7 @@ class QuickOrderRepository implements QuickOrderRepositoryInterface
         }
         return  $this;
     }
+
     /**
      * @param int $id
      * @return QuickOrderRepositoryInterface

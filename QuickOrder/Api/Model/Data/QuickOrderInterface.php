@@ -9,17 +9,6 @@ namespace Thesis\QuickOrder\Api\Model\Data;
  */
 interface QuickOrderInterface
 {
-    const CACHE_TAG             = 'thesis_quickorder';
-    const REGISTRY_KEY          = 'thesis_quickorder_order';
-    const ID_FIELD              = 'order_id';
-    const NAME_COL_NAME         = 'name';
-    const SKU_COL_NAME          = 'sku';
-    const PHONE_COL_NAME        = 'phone';
-    const EMAIL_COL_NAME        = 'email';
-    const CREATED_AT_COL_NAME   = 'created_at';
-    const UPDATED_AT_COL_NAME   = 'updated_at';
-    const STATUS_COL_NAME       = 'status';
-
     /**
      * @return int|null
      */

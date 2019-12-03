@@ -11,8 +11,6 @@ use Thesis\QuickOrder\Controller\Adminhtml\Order as BaseAction;
  */
 class Create extends BaseAction
 {
-    const ACL_RESOURCE      = 'Thesis_QuickOrder::all';
-    const MENU_ITEM         = 'Thesis_QuickOrder::all';
+    const ACL_RESOURCE      = 'Thesis_QuickOrder::order';
     const PAGE_TITLE        = 'Add Order';
-    const BREADCRUMB_TITLE  = 'Add Order';
 }

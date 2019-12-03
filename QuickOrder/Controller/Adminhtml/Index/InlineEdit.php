@@ -2,7 +2,7 @@
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action\Context;
-use Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor;
+use Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor as OrderDataProcessor;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
@@ -20,7 +20,7 @@ class InlineEdit extends \Magento\Backend\App\Action
      */
     const ADMIN_RESOURCE = 'Thesis_QuickOrder::order';
     /**
-     * @var \Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor
+     * @var OrderDataProcessor
      */
     protected $dataProcessor;
     /**
@@ -33,13 +33,13 @@ class InlineEdit extends \Magento\Backend\App\Action
     protected $jsonFactory;
     /**
      * @param Context $context
-     * @param PostDataProcessor $dataProcessor
+     * @param OrderDataProcessor $dataProcessor
      * @param orderRepository $orderRepository
      * @param JsonFactory $jsonFactory
      */
     public function __construct(
         Context $context,
-        PostDataProcessor $dataProcessor,
+        OrderDataProcessor $dataProcessor,
         OrderRepository $orderRepository,
         JsonFactory $jsonFactory
     ) {
@@ -70,20 +70,20 @@ class InlineEdit extends \Magento\Backend\App\Action
             /** @var \Thesis\QuickOrder\Model\QuickOrder $order */
             $order = $this->orderRepository->getById($orderId);
             try {
-                $orderData = $this->filterPost($orderItems[$orderId]);
-                $this->validatePost($orderData, $order, $error, $messages);
+                $orderData = $this->filterOrder($orderItems[$orderId]);
+                $this->validateOrder($orderData, $order, $error, $messages);
                 $extendedOrderData = $order->getData();
-                $this->setCmsPageData($order, $extendedOrderData, $orderData);
+                $this->setOrderData($order, $extendedOrderData, $orderData);
 
                 $this->orderRepository->save($order);
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $messages[] = $this->getErrorWithPageId($order, $e->getMessage());
+                $messages[] = $this->getErrorWithOrderId($order, $e->getMessage());
                 $error = true;
             } catch (\RuntimeException $e) {
-                $messages[] = $this->getErrorWithPageId($order, $e->getMessage());
+                $messages[] = $this->getErrorWithOrderId($order, $e->getMessage());
                 $error = true;
             } catch (\Exception $e) {
-                $messages[] = $this->getErrorWithPageId(
+                $messages[] = $this->getErrorWithOrderId(
                     $order,
                     __('Something went wrong while saving the order.')
                 );
@@ -100,7 +100,7 @@ class InlineEdit extends \Magento\Backend\App\Action
      * @param array $postData
      * @return array
      */
-    protected function filterPost($postData = [])
+    protected function filterOrder($postData = [])
     {
         $orderData = $this->dataProcessor->filter($postData);
         $orderData['custom_theme'] = isset($orderData['custom_theme']) ? $orderData['custom_theme'] : null;
@@ -120,7 +120,7 @@ class InlineEdit extends \Magento\Backend\App\Action
      * @param array $messages
      * @return void
      */
-    protected function validatePost(
+    protected function validateOrder(
         array $orderData,
         \Thesis\QuickOrder\Model\QuickOrder $order,
         &$error,
@@ -129,7 +129,7 @@ class InlineEdit extends \Magento\Backend\App\Action
         if (!($this->dataProcessor->validate($orderData) && $this->dataProcessor->validateRequireEntry($orderData))) {
             $error = true;
             foreach ($this->messageManager->getMessages(true)->getItems() as $error) {
-                $messages[] = $this->getErrorWithPageId($order, $error->getText());
+                $messages[] = $this->getErrorWithOrderId($order, $error->getText());
             }
         }
     }
@@ -140,7 +140,7 @@ class InlineEdit extends \Magento\Backend\App\Action
      * @param string $errorText
      * @return string
      */
-    protected function getErrorWithPageId(QuickOrderInterface $order, $errorText)
+    protected function getErrorWithOrderId(QuickOrderInterface $order, $errorText)
     {
         return '[Order ID: ' . $order->getId() . '] ' . $errorText;
     }
@@ -152,7 +152,7 @@ class InlineEdit extends \Magento\Backend\App\Action
      * @param array $orderData
      * @return $this
      */
-    public function setCmsPageData(
+    public function setOrderData(
         \Thesis\QuickOrder\Model\QuickOrder $order,
         array $extendedOrderData,
         array $orderData

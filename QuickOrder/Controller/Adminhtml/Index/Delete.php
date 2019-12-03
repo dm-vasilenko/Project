@@ -13,7 +13,7 @@ class Delete extends BaseAction
     /** {@inheritdoc} */
     public function execute()
     {
-        $id = $this->getRequest()->getParam(static::QUERY_PARAM_ID);
+        $id = $this->getRequest()->getParam('id');
 
         if (!empty($id)) {
             try {
@@ -26,7 +26,7 @@ class Delete extends BaseAction
             }
         } else {
             $this->logger->error(
-                sprintf("Require parameter `%s` is missing", static::QUERY_PARAM_ID)
+                sprintf("Require parameter `%s` is missing", 'id')
             );
             $this->messageManager->addMessage(__('No item to delete'));
         }

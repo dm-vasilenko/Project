@@ -23,10 +23,7 @@ use Thesis\QuickOrder\Model\StatusFactory;
 abstract class Status extends Action
 {
     const ACL_RESOURCE          = 'Thesis_QuickOrder::status';
-    const MENU_ITEM             = 'Thesis_QuickOrder::all';
     const PAGE_TITLE            = 'Quick Order';
-    const BREADCRUMB_TITLE      = 'Quick Order';
-    const QUERY_PARAM_ID        = 'id';
 
     /** @var PageFactory  */
     protected $pageFactory;
@@ -98,16 +95,12 @@ abstract class Status extends Action
     }
 
     /**
-     * @return Order
+     * @return Status
      */
     protected function _setPageData()
     {
         $resultPage = $this->_getResultPage();
-        $resultPage->setActiveMenu(static::MENU_ITEM);
         $resultPage->getConfig()->getTitle()->prepend((__(static::PAGE_TITLE)));
-        $resultPage->addBreadcrumb(__(static::BREADCRUMB_TITLE), __(static::BREADCRUMB_TITLE));
-        $resultPage->addBreadcrumb(__(static::BREADCRUMB_TITLE), __(static::BREADCRUMB_TITLE));
-
         return $this;
     }
 

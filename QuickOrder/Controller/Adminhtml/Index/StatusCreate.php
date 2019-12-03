@@ -2,7 +2,6 @@
 
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
-use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
 use Thesis\QuickOrder\Controller\Adminhtml\Status as BaseAction;
 
 /**
@@ -11,8 +10,6 @@ use Thesis\QuickOrder\Controller\Adminhtml\Status as BaseAction;
  */
 class StatusCreate extends BaseAction
 {
-    const ACL_RESOURCE      = 'Thesis_QuickOrder::all';
-    const MENU_ITEM         = 'Thesis_QuickOrder::all';
+    const ACL_RESOURCE      = 'Thesis_QuickOrder::status';
     const PAGE_TITLE        = 'Add Status';
-    const BREADCRUMB_TITLE  = 'Add Status';
 }

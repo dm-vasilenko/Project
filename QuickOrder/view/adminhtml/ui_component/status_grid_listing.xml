@@ -138,7 +138,7 @@
         </column>
         <column name="is_default">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Thesis\QuickOrder\UI\Component\Listing\Column\ActionsSelect</item>
+                <item name="options" xsi:type="object">Thesis\QuickOrder\UI\Component\Listing\Column\ActionsStatusSelect</item>
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Is default</item>

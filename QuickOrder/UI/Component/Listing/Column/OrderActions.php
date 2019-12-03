@@ -9,10 +9,10 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Class Actions
+ * Class OrderActions
  * @package Thesis\QuickOrder\UI\Component\Listing\Column
  */
-class Actions extends Column
+class OrderActions extends Column
 {
     const URL_PATH_DELETE = 'quickorder/index/delete';
     /** @var UrlInterface */

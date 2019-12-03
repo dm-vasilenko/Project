@@ -16,7 +16,7 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Thesis\QuickOrder\Block\Adminhtml\Status\Edit\SaveStatus"/>
+            <button name="save" class="Thesis\QuickOrder\Block\Adminhtml\Status\SaveStatus"/>
         </buttons>
         <namespace>status_form</namespace>
         <dataScope>data</dataScope>
@@ -26,7 +26,7 @@
     </settings>
     <dataSource name="status_form_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Thesis\QuickOrder\DataProvider\StatusProvider</argument>
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">status_form_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">status_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>

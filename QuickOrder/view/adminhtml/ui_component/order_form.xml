@@ -16,7 +16,7 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Thesis\QuickOrder\Block\Adminhtml\Order\Edit\SaveButton"/>
+            <button name="save" class="Thesis\QuickOrder\Block\Adminhtml\Order\SaveOrder"/>
         </buttons>
         <namespace>order_form</namespace>
         <dataScope>data</dataScope>
@@ -26,7 +26,7 @@
     </settings>
     <dataSource name="order_form_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Thesis\QuickOrder\DataProvider\OrderProvider</argument>
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">order_form_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">order_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>

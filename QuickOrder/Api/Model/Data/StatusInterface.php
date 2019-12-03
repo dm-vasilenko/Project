@@ -9,12 +9,6 @@ namespace Thesis\QuickOrder\Api\Model\Data;
  */
 interface StatusInterface
 {
-    const CACHE_TAG                 = 'thesis_quickorder';
-    const REGISTRY_KEY              = 'thesis_quickorder_status';
-    const ID_FIELD                  = 'status_id';
-    const STATUS_CODE_COL_NAME      = 'status_code';
-    const STATUS_LABEL_COL_NAME     = 'label';
-
     /**
      * @return mixed
      */

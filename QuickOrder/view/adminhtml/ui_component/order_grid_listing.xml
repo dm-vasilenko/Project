@@ -189,7 +189,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="Thesis\QuickOrder\UI\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Thesis\QuickOrder\UI\Component\Listing\Column\OrderActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="indexField" xsi:type="string">order_id</item>

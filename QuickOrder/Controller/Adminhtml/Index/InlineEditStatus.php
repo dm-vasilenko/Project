@@ -2,7 +2,7 @@
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action\Context;
-use Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor;
+use Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor as StatusDataProcessor;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
@@ -11,9 +11,8 @@ use Thesis\QuickOrder\Api\Model\StatusRepositoryInterface as StatusRepository;
 use Thesis\QuickOrder\Model\ResourceModel\StatusFactory;
 
 /**
- * Cms page grid inline edit controller
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * Class InlineEditStatus
+ * @package Thesis\QuickOrder\Controller\Adminhtml\Index
  */
 class InlineEditStatus extends \Magento\Backend\App\Action
 {
@@ -22,7 +21,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      */
     const ADMIN_RESOURCE = 'Thesis_QuickOrder::status';
     /**
-     * @var \Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor
+     * @var StatusDataProcessor
      */
     protected $dataProcessor;
     /**
@@ -46,7 +45,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      * @param Context $context
      * @param StatusFactory $statusResourceFactory
      * @param StatusInterfaceFactory $statusModelFactory
-     * @param PostDataProcessor $dataProcessor
+     * @param StatusDataProcessor $dataProcessor
      * @param statusRepository $statusRepository
      * @param JsonFactory $jsonFactory
      */
@@ -54,7 +53,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
         Context $context,
         StatusFactory $statusResourceFactory,
         StatusInterfaceFactory $statusModelFactory,
-        PostDataProcessor $dataProcessor,
+        StatusDataProcessor $dataProcessor,
         StatusRepository $statusRepository,
         JsonFactory $jsonFactory
     ) {
@@ -102,19 +101,19 @@ class InlineEditStatus extends \Magento\Backend\App\Action
                         __('at least one status should be by default')
                     );
                 }
-                $statusData = $this->filterPost($statusItems[$statusId]);
-                $this->validatePost($statusData, $status, $error, $messages);
+                $statusData = $this->filterStatus($statusItems[$statusId]);
+                $this->validateStatus($statusData, $status, $error, $messages);
                 $extendedStatusData = $status->getData();
-                $this->setCmsPageData($status, $extendedStatusData, $statusData);
+                $this->setStatusData($status, $extendedStatusData, $statusData);
                 $this->statusRepository->save($status);
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $messages[] = $this->getErrorWithPageId($status, $e->getMessage());
+                $messages[] = $this->getErrorWithStatusId($status, $e->getMessage());
                 $error = true;
             } catch (\RuntimeException $e) {
-                $messages[] = $this->getErrorWithPageId($status, $e->getMessage());
+                $messages[] = $this->getErrorWithStatusId($status, $e->getMessage());
                 $error = true;
             } catch (\Exception $e) {
-                $messages[] = $this->getErrorWithPageId(
+                $messages[] = $this->getErrorWithStatusId(
                     $status,
                     __('Something went wrong while saving the status.')
                 );
@@ -131,7 +130,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      * @param array $postData
      * @return array
      */
-    protected function filterPost($postData = [])
+    protected function filterStatus($postData = [])
     {
         $statusData = $this->dataProcessor->filter($postData);
         $statusData['custom_theme'] = isset($statusData['custom_theme']) ? $statusData['custom_theme'] : null;
@@ -150,7 +149,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      * @param array $messages
      * @return void
      */
-    protected function validatePost(
+    protected function validateStatus(
         array $statusData,
         \Thesis\QuickOrder\Model\Status $status,
         &$error,
@@ -159,7 +158,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
         if (!($this->dataProcessor->validate($statusData) && $this->dataProcessor->validateRequireEntry($statusData))) {
             $error = true;
             foreach ($this->messageManager->getMessages(true)->getItems() as $error) {
-                $messages[] = $this->getErrorWithPageId($status, $error->getText());
+                $messages[] = $this->getErrorWithStatusId($status, $error->getText());
             }
         }
     }
@@ -170,7 +169,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      * @param string $errorText
      * @return string
      */
-    protected function getErrorWithPageId(StatusInterface $status, $errorText)
+    protected function getErrorWithStatusId(StatusInterface $status, $errorText)
     {
         return '[Status ID: ' . $status->getId() . '] ' . $errorText;
     }
@@ -180,7 +179,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      * @param array $statusData
      * @return $this
      */
-    public function setCmsPageData(
+    public function setStatusData(
         \Thesis\QuickOrder\Model\Status $status,
         array $extendedStatusData,
         array $statusData

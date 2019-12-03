@@ -10,8 +10,6 @@
                 type="Thesis\QuickOrder\Repository\QuickOrderRepository" />
     <preference for="Thesis\QuickOrder\Api\Model\StatusRepositoryInterface"
                 type="Thesis\QuickOrder\Repository\StatusRepository" />
-    <preference for="Thesis\QuickOrder\Api\Model\Data\QuickOrderSearchResultInterface"
-                type="Magento\Framework\Api\SearchResults" />
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -25,6 +23,22 @@
             <argument name="collections" xsi:type="array">
                 <item
                         name="status_grid_listing_data_source"
+                        xsi:type="string"
+                >Thesis\QuickOrder\Model\ResourceModel\Status\Grid\Collection</item>
+            </argument>
+        </arguments>
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item
+                        name="order_form_data_source"
+                        xsi:type="string"
+                >Thesis\QuickOrder\Model\ResourceModel\QuickOrder\Grid\Collection</item>
+            </argument>
+        </arguments>
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item
+                        name="status_form_data_source"
                         xsi:type="string"
                 >Thesis\QuickOrder\Model\ResourceModel\Status\Grid\Collection</item>
             </argument>
