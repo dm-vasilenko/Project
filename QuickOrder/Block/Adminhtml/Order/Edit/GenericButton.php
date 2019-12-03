@@ -7,17 +7,26 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 
+/**
+ * Class GenericButton
+ * @package Thesis\QuickOrder\Block\Adminhtml\Order\Edit
+ */
 class GenericButton
 {
-    /** @var Context */
+    /**
+     * @var Context 
+     */
     protected $context;
 
-    /** @var QuickOrderRepositoryInterface */
+    /**
+     * @var QuickOrderRepositoryInterface 
+     */
     protected $repository;
 
     /**
      * GenericButton constructor.
-     * @param Context $context
+     *
+     * @param Context                       $context
      * @param QuickOrderRepositoryInterface $repository
      */
     public function __construct(
@@ -47,9 +56,9 @@ class GenericButton
     /**
      * Generate url by route and parameters
      *
-     * @param   string $route
-     * @param   array $params
-     * @return  string
+     * @param  string $route
+     * @param  array  $params
+     * @return string
      */
     public function getUrl($route = '', $params = [])
     {

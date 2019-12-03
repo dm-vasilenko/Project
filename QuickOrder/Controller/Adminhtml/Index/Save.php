@@ -1,9 +1,7 @@
 <?php
-
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
@@ -24,13 +22,11 @@ class Save extends BaseAction
      * @var StatusFactory
      */
     protected $statusResourceFactory;
-
     /**
      * Save constructor.
      * @param Context $context
      * @param StatusInterfaceFactory $statusModelFactory
      * @param StatusFactory $statusResourceFactory
-     * @param Registry $registry
      * @param PageFactory $pageFactory
      * @param QuickOrderRepositoryInterface $quickorderRepository
      * @param QuickOrderFactory $factory
@@ -40,7 +36,6 @@ class Save extends BaseAction
         Context $context,
         StatusInterfaceFactory $statusModelFactory,
         StatusFactory $statusResourceFactory,
-        Registry $registry,
         PageFactory $pageFactory,
         QuickOrderRepositoryInterface $quickorderRepository,
         QuickOrderFactory $factory,
@@ -48,24 +43,20 @@ class Save extends BaseAction
     ) {
         $this->statusModelFactory = $statusModelFactory;
         $this->statusResourceFactory = $statusResourceFactory;
-        parent::__construct($context, $registry, $pageFactory, $quickorderRepository, $factory, $logger);
+        parent::__construct($context, $pageFactory, $quickorderRepository, $factory, $logger);
     }
-
     /** {@inheritdoc}
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute()
     {
         $isPost = $this->getRequest()->isPost();
-
         if ($isPost) {
             $model = $this->getModel();
             $formData = $this->getRequest()->getParam('order');
-
             if (empty($formData)) {
                 $formData = $this->getRequest()->getParams();
             }
-
             if (!empty($formData[QuickOrderInterface::ID_FIELD])) {
                 $id = $formData[QuickOrderInterface::ID_FIELD];
                 $model = $this->repository->getById($id);
@@ -78,30 +69,18 @@ class Save extends BaseAction
              */
             $statusModel = $this->statusModelFactory->create();
             $this->statusResourceFactory->create()->load($statusModel, '1', 'is_default');
-
             $model->setData($formData);
             $model->setStatus($statusModel);
-
             try {
-                $model = $this->repository->save($model);
+                $this->repository->save($model);
                 $this->messageManager->addSuccessMessage(__('Order has been saved.'));
-                if ($this->getRequest()->getParam('back')) {
-                    return $this->_redirect('*/*/edit', ['id' => $model->getId(), '_current' => true]);
-                }
 
                 return $this->redirectToGrid();
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage(__('Order doesn\'t save'));
             }
-
-            $this->_getSession()->setFormData($formData);
-
-            return (!empty($model->getId())) ?
-                $this->_redirect('*/*/edit', ['id' => $model->getId()])
-                : $this->_redirect('*/*/create');
         }
-
         return $this->doRefererRedirect();
     }
 }

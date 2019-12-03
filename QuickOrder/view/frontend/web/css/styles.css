@@ -18,3 +18,9 @@
     background: #1979c3;
     transition: background 0s;
 }
+
+label.required:after
+{
+    color: red;
+    content: " *";
+}

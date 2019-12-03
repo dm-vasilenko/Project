@@ -4,6 +4,10 @@ namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
 use Thesis\QuickOrder\Controller\Adminhtml\Order as BaseAction;
 
+/**
+ * Class MassDelete
+ * @package Thesis\QuickOrder\Controller\Adminhtml\Index
+ */
 class MassDelete extends BaseAction
 {
     /** {@inheritdoc} */

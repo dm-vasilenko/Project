@@ -2,17 +2,19 @@
 
 namespace Thesis\QuickOrder\Api\Model\Data;
 
+/**
+ * Interface StatusInterface
+ *
+ * @package Thesis\QuickOrder\Api\Model\Data
+ */
 interface StatusInterface
 {
     const CACHE_TAG                 = 'thesis_quickorder';
-
     const REGISTRY_KEY              = 'thesis_quickorder_status';
-
     const ID_FIELD                  = 'status_id';
+    const STATUS_CODE_COL_NAME      = 'status_code';
+    const STATUS_LABEL_COL_NAME     = 'label';
 
-    const STATUS_CODE_COL_NAME  = 'status_code';
-
-    const STATUS_LABEL_COL_NAME = 'label';
     /**
      * @return mixed
      */
@@ -28,26 +30,26 @@ interface StatusInterface
      * @return string
      */
     public function getStatusCode();
+
     /**
-     * @param string $label
+     * @param  string $label
      * @return StatusInterface
      */
     public function setLabel(string $label);
+
     /**
      * @return string
      */
     public function getLabel();
+
     /**
-     * @param bool $default
+     * @param  bool $default
      * @return StatusInterface
      */
     public function setIsDefault(bool $default);
+
     /**
      * @return bool
      */
     public function getIsDefault();
-    /**
-     * @param bool $deleted
-     * @return StatusInterface
-     */
 }

@@ -13,14 +13,14 @@
                 resource="Thesis_QuickOrder::all"
         />
         <add
-                id="Thesis_QuickOrder::grid"
+                id="Thesis_QuickOrder::order"
                 title="Order Grid"
                 translate="title"
                 module="Thesis_QuickOrder"
                 sortOrder="10"
                 parent="Thesis_QuickOrder::all"
                 action="quickorder/index/listing"
-                resource="Thesis_QuickOrder::grid"
+                resource="Thesis_QuickOrder::order"
         />
         <add
                 id="Thesis_QuickOrder::status"

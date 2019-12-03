@@ -1,11 +1,18 @@
 <?php
+
 namespace Thesis\QuickOrder\Model\ResourceModel\Status\Grid;
+
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
 use Thesis\QuickOrder\Model\ResourceModel\Status as ResourceModel;
 use Thesis\QuickOrder\Model\ResourceModel\Status\Collection as StatusCollection;
+
+/**
+ * Class Collection
+ * @package Thesis\QuickOrder\Model\ResourceModel\Status\Grid
+ */
 class Collection extends StatusCollection implements SearchResultInterface
 {
     /** @var AggregationInterface */

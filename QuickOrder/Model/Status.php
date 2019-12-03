@@ -7,8 +7,15 @@ use Thesis\QuickOrder\Api\Model\Data\StatusInterface as InterfaceStatus;
 use Thesis\QuickOrder\Api\Model\Schema\StatusSchemaInterface;
 use Thesis\QuickOrder\Model\ResourceModel\Status as ResourceModel;
 
+/**
+ * Class Status
+ * @package Thesis\QuickOrder\Model
+ */
 class Status extends AbstractModel implements InterfaceStatus
 {
+    /**
+     * @return void
+     */
     public function _construct()
     {
         $this->_init(ResourceModel::class);
@@ -20,7 +27,6 @@ class Status extends AbstractModel implements InterfaceStatus
     public function getId()
     {
         return $this->getData(StatusSchemaInterface::STATUS_ID_COL_NAME);
-
     }
 
     /**
@@ -79,5 +85,4 @@ class Status extends AbstractModel implements InterfaceStatus
     {
         return (bool)$this->getData(StatusSchemaInterface::IS_DEFAULT);
     }
-
 }

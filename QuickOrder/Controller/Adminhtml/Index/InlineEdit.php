@@ -2,25 +2,23 @@
 namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor;
-
+use Magento\Framework\Controller\Result\JsonFactory;
 
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
 
 use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface as OrderRepository;
 
 /**
- * Cms page grid inline edit controller
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * Class InlineEdit
+ * @package Thesis\QuickOrder\Controller\Adminhtml\Index
  */
 class InlineEdit extends \Magento\Backend\App\Action
 {
     /**
      * Authorization level of a basic admin session
      */
-    const ADMIN_RESOURCE = 'Magento_Cms::save';
+    const ADMIN_RESOURCE = 'Thesis_QuickOrder::order';
     /**
      * @var \Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor
      */
@@ -60,36 +58,34 @@ class InlineEdit extends \Magento\Backend\App\Action
         $resultJson = $this->jsonFactory->create();
         $error = false;
         $messages = [];
-        $a = $this->getRequest()->getParams();
-        $postItems = $this->getRequest()->getParam('items', []);
-        if (!($this->getRequest()->getParam('isAjax') && count($postItems))) {
+        $orderItems = $this->getRequest()->getParam('items', []);
+        if (!($this->getRequest()->getParam('isAjax') && count($orderItems))) {
             return $resultJson->setData([
                 'messages' => [__('Please correct the data sent.')],
                 'error' => true,
             ]);
         }
 
-        foreach (array_keys($postItems) as $pageId) {
-            /** @var \Thesis\QuickOrder\Model\QuickOrder $page */
-            $page = $this->orderRepository->getById($pageId);
+        foreach (array_keys($orderItems) as $orderId) {
+            /** @var \Thesis\QuickOrder\Model\QuickOrder $order */
+            $order = $this->orderRepository->getById($orderId);
             try {
-                $pageData = $this->filterPost($postItems[$pageId]);
-                $this->validatePost($pageData, $page, $error, $messages);
-                $extendedPageData = $page->getData();
-                $this->setCmsPageData($page, $extendedPageData, $pageData);
+                $orderData = $this->filterPost($orderItems[$orderId]);
+                $this->validatePost($orderData, $order, $error, $messages);
+                $extendedOrderData = $order->getData();
+                $this->setCmsPageData($order, $extendedOrderData, $orderData);
 
-
-                $this->orderRepository->save($page);
+                $this->orderRepository->save($order);
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $messages[] = $this->getErrorWithPageId($page, $e->getMessage());
+                $messages[] = $this->getErrorWithPageId($order, $e->getMessage());
                 $error = true;
             } catch (\RuntimeException $e) {
-                $messages[] = $this->getErrorWithPageId($page, $e->getMessage());
+                $messages[] = $this->getErrorWithPageId($order, $e->getMessage());
                 $error = true;
             } catch (\Exception $e) {
                 $messages[] = $this->getErrorWithPageId(
-                    $page,
-                    __('Something went wrong while saving the page.')
+                    $order,
+                    __('Something went wrong while saving the order.')
                 );
                 $error = true;
             }
@@ -101,60 +97,67 @@ class InlineEdit extends \Magento\Backend\App\Action
         ]);
     }
     /**
-     * Filtering posted data.
-     *
      * @param array $postData
      * @return array
      */
     protected function filterPost($postData = [])
     {
-        $pageData = $this->dataProcessor->filter($postData);
-        $pageData['custom_theme'] = isset($pageData['custom_theme']) ? $pageData['custom_theme'] : null;
-        $pageData['custom_root_template'] = isset($pageData['custom_root_template'])
-            ? $pageData['custom_root_template']
+        $orderData = $this->dataProcessor->filter($postData);
+        $orderData['custom_theme'] = isset($orderData['custom_theme']) ? $orderData['custom_theme'] : null;
+        $orderData['custom_root_template'] = isset($orderData['custom_root_template'])
+            ? $orderData['custom_root_template']
             : null;
-        return $pageData;
+        return $orderData;
     }
+
     /**
      * Validate post data
      *
-     * @param array $pageData
-     * @param \Magento\Cms\Model\Page $page
+     * @param array $orderData
+     * \Thesis\QuickOrder\Model\QuickOrder $order
+     * @param \Thesis\QuickOrder\Model\QuickOrder $order
      * @param bool $error
      * @param array $messages
      * @return void
      */
-    protected function validatePost(array $pageData, \Thesis\QuickOrder\Model\QuickOrder $page, &$error, array &$messages)
-    {
-        if (!($this->dataProcessor->validate($pageData) && $this->dataProcessor->validateRequireEntry($pageData))) {
+    protected function validatePost(
+        array $orderData,
+        \Thesis\QuickOrder\Model\QuickOrder $order,
+        &$error,
+        array &$messages
+    ) {
+        if (!($this->dataProcessor->validate($orderData) && $this->dataProcessor->validateRequireEntry($orderData))) {
             $error = true;
             foreach ($this->messageManager->getMessages(true)->getItems() as $error) {
-                $messages[] = $this->getErrorWithPageId($page, $error->getText());
+                $messages[] = $this->getErrorWithPageId($order, $error->getText());
             }
         }
     }
     /**
      * Add page title to error message
      *
-     * @param QuickOrderInterface $page
+     * @param QuickOrderInterface $order
      * @param string $errorText
      * @return string
      */
-    protected function getErrorWithPageId(QuickOrderInterface $page, $errorText)
+    protected function getErrorWithPageId(QuickOrderInterface $order, $errorText)
     {
-        return '[Page ID: ' . $page->getId() . '] ' . $errorText;
+        return '[Order ID: ' . $order->getId() . '] ' . $errorText;
     }
     /**
      * Set cms page data
      *
-     * @param \Magento\Cms\Model\Page $page
-     * @param array $extendedPageData
-     * @param array $pageData
+     * @param \Thesis\QuickOrder\Model\QuickOrder $order
+     * @param array $extendedOrderData
+     * @param array $orderData
      * @return $this
      */
-    public function setCmsPageData(\Thesis\QuickOrder\Model\QuickOrder $page, array $extendedPageData, array $pageData)
-    {
-        $page->setData(array_merge($page->getData(), $extendedPageData, $pageData));
+    public function setCmsPageData(
+        \Thesis\QuickOrder\Model\QuickOrder $order,
+        array $extendedOrderData,
+        array $orderData
+    ) {
+        $order->setData(array_merge($order->getData(), $extendedOrderData, $orderData));
         return $this;
     }
 }

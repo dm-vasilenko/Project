@@ -8,7 +8,6 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
@@ -17,45 +16,62 @@ use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterface;
 use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 use Thesis\QuickOrder\Model\QuickOrderFactory;
 
+/**
+ * Class Order
+ * @package Thesis\QuickOrder\Controller\Adminhtml
+ */
 abstract class Order extends Action
 {
-    const ACL_RESOURCE          = 'Thesis_QuickOrder::all';
+    const ACL_RESOURCE          = 'Thesis_QuickOrder::order';
     const MENU_ITEM             = 'Thesis_QuickOrder::all';
     const PAGE_TITLE            = 'Quick Order';
     const BREADCRUMB_TITLE      = 'Quick Order';
     const QUERY_PARAM_ID        = 'id';
 
-    /** @var Registry  */
-    protected $registry;
-    /** @var PageFactory  */
-    protected $pageFactory;
-    /** @var  QuickOrderFactory */
-    protected $modelFactory;
-    /** @var QuickOrderInterface */
-    protected $model;
-    /** @var Page */
-    protected $resultPage;
-    /** @var QuickOrderRepositoryInterface */
-    protected $repository;
-    /** @var Logger */
-    protected $logger;
     /**
-     * @param Context                          $context
-     * @param Registry                         $registry
-     * @param PageFactory                      $pageFactory
-     * @param QuickOrderRepositoryInterface    $quickorderRepository
-     * @param QuickOrderFactory                $factory
-     * @param LoggerInterface                  $logger
+     * @var PageFactory
+     */
+    protected $pageFactory;
+
+    /**
+     * @var QuickOrderFactory
+     */
+    protected $modelFactory;
+
+    /**
+     * @var QuickOrderInterface
+     */
+    protected $model;
+
+    /**
+     * @var Page
+     */
+    protected $resultPage;
+
+    /**
+     * @var QuickOrderRepositoryInterface
+     */
+    protected $repository;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @param Context                       $context
+     * @param PageFactory                   $pageFactory
+     * @param QuickOrderRepositoryInterface $quickorderRepository
+     * @param QuickOrderFactory             $factory
+     * @param LoggerInterface               $logger
      */
     public function __construct(
         Context $context,
-        Registry $registry,
         PageFactory $pageFactory,
         QuickOrderRepositoryInterface $quickorderRepository,
         QuickOrderFactory $factory,
         LoggerInterface $logger
     ) {
-        $this->registry       = $registry;
         $this->pageFactory    = $pageFactory;
         $this->repository     = $quickorderRepository;
         $this->modelFactory   = $factory;
@@ -63,14 +79,20 @@ abstract class Order extends Action
 
         parent::__construct($context);
     }
-    /** {@inheritdoc} */
+
+    /**
+     * {@inheritdoc}
+     */
     public function execute()
     {
         $this->_setPageData();
 
         return $this->resultPage;
     }
-    /** {@inheritdoc} */
+
+    /**
+     * {@inheritdoc}
+     */
     protected function _isAllowed()
     {
         $result = parent::_isAllowed();
@@ -78,6 +100,7 @@ abstract class Order extends Action
 
         return $result;
     }
+
     /**
      * @return Page
      */
@@ -89,6 +112,7 @@ abstract class Order extends Action
 
         return $this->resultPage;
     }
+
     /**
      * @return Order
      */
@@ -102,7 +126,10 @@ abstract class Order extends Action
 
         return $this;
     }
-    /** @return QuickOrderInterface */
+
+    /**
+     * @return QuickOrderInterface
+     */
     protected function getModel()
     {
         if (null === $this->model) {
@@ -111,6 +138,7 @@ abstract class Order extends Action
 
         return $this->model;
     }
+
     /**
      * @return ResultInterface
      */
@@ -121,6 +149,7 @@ abstract class Order extends Action
 
         return $redirect;
     }
+
     /**
      * @return ResponseInterface
      */

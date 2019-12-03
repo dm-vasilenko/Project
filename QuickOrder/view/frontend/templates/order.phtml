@@ -3,25 +3,22 @@
 <button type="submit"
         title="<?= $block->escapeHtml(__('Quick Order')) ?>"
         class="btn-btn-primary"
-        id="btn-btn-primary<?=$productSku ?>"
+        id="btn-btn-primary<?= /* @escapeNotVerified */ $productSku ?>"
         >
-    <span><?= /* @escapeNotVerified */ __('Quick Order') ?></span>
+    <span>Quick Order</span>
 </button>
 
-<div class="mypopup<?= $productSku ?>">
+<div class="mypopup<?= /* @escapeNotVerified */ $productSku ?>">
     <form action="<?= $block->getUrl("quickorderr/index/save") ?>"
           method="POST"
           data-mage-init='{"validation":{}}'>
-        <label>Name
+        <label class="control-label required">Name</label>
             <input type="text" name="name" data-validate='{"required":true, "maxlength": 50}'>
-        </label>
-        <label>Phone number
+        <label class="control-label required">Phone number</label>
             <input type="number" name="phone" data-validate='{"required":true, "maxlength": 20, "number": true}'>
-        </label>
-        <label>Email
+        <label>Email</label>
             <input type="email" name="email" data-validate="{'maxlength': 50, 'validate-email':true }">
-        </label>
-        <input type="hidden" name="sku" value="<?= $productSku ?>">
+        <input type="hidden" name="sku" value="<?= /* @escapeNotVerified */ $productSku ?>">
         <input type="hidden" name="url" value="<?= $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true])?>">
         <input type="submit" value="Send" class="action submit primary">
     </form>
@@ -40,9 +37,9 @@
                 title: 'Quick order',
                 buttons: false
             };
-            var popup = modal(options, $('.mypopup<?= $productSku ?>'));
-            $("#btn-btn-primary<?=$productSku?>").on("click",function(){
-                $('.mypopup<?= $productSku ?>').modal('openModal');
+            var popup = modal(options, $('.mypopup<?= /* @escapeNotVerified */ $productSku ?>'));
+            $("#btn-btn-primary<?= /* @escapeNotVerified */ $productSku?>").on("click",function(){
+                $('.mypopup<?= /* @escapeNotVerified */ $productSku ?>').modal('openModal');
             });
         }
     );

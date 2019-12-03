@@ -4,9 +4,15 @@ namespace Thesis\QuickOrder\Block\Adminhtml\Order\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
+/**
+ * Class SaveButton
+ * @package Thesis\QuickOrder\Block\Adminhtml\Order\Edit
+ */
 class SaveButton extends GenericButton implements ButtonProviderInterface
 {
-    /** {@inheritdoc} */
+    /**
+     * {@inheritdoc}
+     */
     public function getButtonData()
     {
         return [

@@ -1,20 +1,27 @@
 <?php
 namespace Thesis\QuickOrder\Setup;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Thesis\QuickOrder\Api\Model\Schema\QuickOrderSchemaInterface;
 use Thesis\QuickOrder\Api\Model\Schema\StatusSchemaInterface;
-use Magento\Framework\DB\Adapter\AdapterInterface;
 
+/**
+ * Class InstallSchema
+ * @package Thesis\QuickOrder\Setup
+ */
 class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
 {
     /**
      * @param SchemaSetupInterface $setup
      * @param \Magento\Framework\Setup\ModuleContextInterface $context
+     * @throws \Zend_Db_Exception
      */
-    public function install(\Magento\Framework\Setup\SchemaSetupInterface $setup, \Magento\Framework\Setup\ModuleContextInterface $context)
-    {
+    public function install(
+        \Magento\Framework\Setup\SchemaSetupInterface $setup,
+        \Magento\Framework\Setup\ModuleContextInterface $context
+    ) {
         $setup->startSetup();
         $this->createStatusTable($setup);
         $this->createOrderTable($setup);
@@ -136,5 +143,4 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
         );
         $setup->getConnection()->createTable($table);
     }
-
 }

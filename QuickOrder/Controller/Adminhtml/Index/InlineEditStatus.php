@@ -20,7 +20,7 @@ class InlineEditStatus extends \Magento\Backend\App\Action
     /**
      * Authorization level of a basic admin session
      */
-    const ADMIN_RESOURCE = 'Magento_Cms::save';
+    const ADMIN_RESOURCE = 'Thesis_QuickOrder::status';
     /**
      * @var \Magento\Cms\Controller\Adminhtml\Page\PostDataProcessor
      */
@@ -41,9 +41,10 @@ class InlineEditStatus extends \Magento\Backend\App\Action
      * @var StatusInterfaceFactory
      */
     protected $statusModelFactory;
+
     /**
      * @param Context $context
-     * @param StatusFactory $statusRepositoryFactory
+     * @param StatusFactory $statusResourceFactory
      * @param StatusInterfaceFactory $statusModelFactory
      * @param PostDataProcessor $dataProcessor
      * @param statusRepository $statusRepository
@@ -64,9 +65,9 @@ class InlineEditStatus extends \Magento\Backend\App\Action
         $this->statusRepository = $statusRepository;
         $this->jsonFactory = $jsonFactory;
     }
+
     /**
      * @return \Magento\Framework\Controller\ResultInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute()
     {
@@ -74,23 +75,22 @@ class InlineEditStatus extends \Magento\Backend\App\Action
         $resultJson = $this->jsonFactory->create();
         $error = false;
         $messages = [];
-        $postItems = $this->getRequest()->getParam('items', []);
-        $array = array_values($postItems);
+        $statusItems = $this->getRequest()->getParam('items', []);
+        $array = array_values($statusItems);
         $defaultAfter = $array[0]["is_default"];
-        if (!($this->getRequest()->getParam('isAjax') && count($postItems))) {
+        if (!($this->getRequest()->getParam('isAjax') && count($statusItems))) {
             return $resultJson->setData([
                 'messages' => [__('Please correct the data sent.')],
                 'error' => true,
             ]);
         }
 
-        foreach (array_keys($postItems) as $pageId) {
-            /** @var \Thesis\QuickOrder\Model\Status $page
+        foreach (array_keys($statusItems) as $statusId) {
+            /** @var \Thesis\QuickOrder\Model\Status $status
              *@var \Thesis\QuickOrder\Model\Status $modelStatus
-             * @var \Magento\Framework\Exception\CouldNotSaveException $a
              */
-            $page = $this->statusRepository->getById($pageId);
-            $defaultBefore = $page->getData('is_default');
+            $status = $this->statusRepository->getById($statusId);
+            $defaultBefore = $status->getData('is_default');
             $modelStatus = $this->statusModelFactory->create();
             try {
                 if (($defaultBefore == "0") && ($defaultAfter == "1")) {
@@ -98,23 +98,25 @@ class InlineEditStatus extends \Magento\Backend\App\Action
                     $modelStatus->setIsDefault(0);
                     $this->statusRepository->save($modelStatus);
                 } elseif (($defaultBefore == "1") && ($defaultAfter == "0")) {
-                    throw new \Magento\Framework\Exception\LocalizedException(__('at least one status should be by default'));
+                    throw new \Magento\Framework\Exception\LocalizedException(
+                        __('at least one status should be by default')
+                    );
                 }
-                $pageData = $this->filterPost($postItems[$pageId]);
-                $this->validatePost($pageData, $page, $error, $messages);
-                $extendedPageData = $page->getData();
-                $this->setCmsPageData($page, $extendedPageData, $pageData);
-                $this->statusRepository->save($page);
+                $statusData = $this->filterPost($statusItems[$statusId]);
+                $this->validatePost($statusData, $status, $error, $messages);
+                $extendedStatusData = $status->getData();
+                $this->setCmsPageData($status, $extendedStatusData, $statusData);
+                $this->statusRepository->save($status);
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $messages[] = $this->getErrorWithPageId($page, $e->getMessage());
+                $messages[] = $this->getErrorWithPageId($status, $e->getMessage());
                 $error = true;
             } catch (\RuntimeException $e) {
-                $messages[] = $this->getErrorWithPageId($page, $e->getMessage());
+                $messages[] = $this->getErrorWithPageId($status, $e->getMessage());
                 $error = true;
             } catch (\Exception $e) {
                 $messages[] = $this->getErrorWithPageId(
-                    $page,
-                    __('Something went wrong while saving the page.')
+                    $status,
+                    __('Something went wrong while saving the status.')
                 );
                 $error = true;
             }
@@ -126,60 +128,64 @@ class InlineEditStatus extends \Magento\Backend\App\Action
         ]);
     }
     /**
-     * Filtering posted data.
-     *
      * @param array $postData
      * @return array
      */
     protected function filterPost($postData = [])
     {
-        $pageData = $this->dataProcessor->filter($postData);
-        $pageData['custom_theme'] = isset($pageData['custom_theme']) ? $pageData['custom_theme'] : null;
-        $pageData['custom_root_template'] = isset($pageData['custom_root_template'])
-            ? $pageData['custom_root_template']
+        $statusData = $this->dataProcessor->filter($postData);
+        $statusData['custom_theme'] = isset($statusData['custom_theme']) ? $statusData['custom_theme'] : null;
+        $statusData['custom_root_template'] = isset($statusData['custom_root_template'])
+            ? $statusData['custom_root_template']
             : null;
-        return $pageData;
+        return $statusData;
     }
+
     /**
      * Validate post data
      *
-     * @param array $pageData
-     * @param \Magento\Cms\Model\Page $page
+     * @param array $statusData
+     * @param \Thesis\QuickOrder\Model\Status $status
      * @param bool $error
      * @param array $messages
      * @return void
      */
-    protected function validatePost(array $pageData, \Thesis\QuickOrder\Model\Status $page, &$error, array &$messages)
-    {
-        if (!($this->dataProcessor->validate($pageData) && $this->dataProcessor->validateRequireEntry($pageData))) {
+    protected function validatePost(
+        array $statusData,
+        \Thesis\QuickOrder\Model\Status $status,
+        &$error,
+        array &$messages
+    ) {
+        if (!($this->dataProcessor->validate($statusData) && $this->dataProcessor->validateRequireEntry($statusData))) {
             $error = true;
             foreach ($this->messageManager->getMessages(true)->getItems() as $error) {
-                $messages[] = $this->getErrorWithPageId($page, $error->getText());
+                $messages[] = $this->getErrorWithPageId($status, $error->getText());
             }
         }
     }
     /**
      * Add page title to error message
      *
-     * @param StatusInterface $page
+     * @param StatusInterface $status
      * @param string $errorText
      * @return string
      */
-    protected function getErrorWithPageId(StatusInterface $page, $errorText)
+    protected function getErrorWithPageId(StatusInterface $status, $errorText)
     {
-        return '[Page ID: ' . $page->getId() . '] ' . $errorText;
+        return '[Status ID: ' . $status->getId() . '] ' . $errorText;
     }
     /**
-     * Set cms page data
-     *
-     * @param \Magento\Cms\Model\Page $page
-     * @param array $extendedPageData
-     * @param array $pageData
+     * @param \Thesis\QuickOrder\Model\Status $status
+     * @param array $extendedStatusData
+     * @param array $statusData
      * @return $this
      */
-    public function setCmsPageData(\Thesis\QuickOrder\Model\Status $page, array $extendedPageData, array $pageData)
-    {
-        $page->setData(array_merge($page->getData(), $extendedPageData, $pageData));
+    public function setCmsPageData(
+        \Thesis\QuickOrder\Model\Status $status,
+        array $extendedStatusData,
+        array $statusData
+    ) {
+        $status->setData(array_merge($status->getData(), $extendedStatusData, $statusData));
         return $this;
     }
 }

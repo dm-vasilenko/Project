@@ -1,5 +1,12 @@
 <?php
+
 namespace Thesis\QuickOrder\Api\Model\Schema;
+
+/**
+ * Interface QuickOrderSchemaInterface
+ *
+ * @package Thesis\QuickOrder\Api\Model\Schema
+ */
 interface QuickOrderSchemaInterface
 {
     const TABLE_NAME            = 'quick_order';

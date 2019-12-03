@@ -4,9 +4,16 @@ namespace Thesis\QuickOrder\Block\Adminhtml\Status\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
+/**
+ * Class SaveStatus
+ *
+ * @package Thesis\QuickOrder\Block\Adminhtml\Status\Edit
+ */
 class SaveStatus extends StatusButton implements ButtonProviderInterface
 {
-    /** {@inheritdoc} */
+    /**
+     * {@inheritdoc} 
+     */
     public function getButtonData()
     {
         return [

@@ -6,7 +6,7 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Thesis_QuickOrder::all" title="Quick Order All" translate="title" sortOrder="30" >
-                    <resource id="Thesis_QuickOrder::grid" title="Order grid" translate="title" sortOrder="10" />
+                    <resource id="Thesis_QuickOrder::order" title="Order grid" translate="title" sortOrder="10" />
                     <resource id="Thesis_QuickOrder::status" title="Status grid" translate="title" sortOrder="10" />
                 </resource>
             </resource>

@@ -18,6 +18,10 @@ use Thesis\QuickOrder\Api\Model\StatusRepositoryInterface;
 use Thesis\QuickOrder\Model\ResourceModel\Status as ResourceModel;
 use Thesis\QuickOrder\Model\ResourceModel\Status\CollectionFactory;
 
+/**
+ * Class StatusRepository
+ * @package Thesis\QuickOrder\Repository
+ */
 class StatusRepository implements StatusRepositoryInterface
 {
     /**

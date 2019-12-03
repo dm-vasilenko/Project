@@ -6,6 +6,10 @@ use Magento\Framework\Data\OptionSourceInterface;
 use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
 use Thesis\QuickOrder\Model\ResourceModel\Status\CollectionFactory;
 
+/**
+ * Class ActionsOrderSelect
+ * @package Thesis\QuickOrder\UI\Component\Listing\Column
+ */
 class ActionsOrderSelect implements OptionSourceInterface
 {
     /**
@@ -35,6 +39,5 @@ class ActionsOrderSelect implements OptionSourceInterface
         }
 
         return $values;
-
     }
 }

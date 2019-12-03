@@ -9,6 +9,10 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\Schema\StatusSchemaInterface;
 
+/**
+ * Class InstallData
+ * @package Thesis\QuickOrder\Setup
+ */
 class InstallData implements InstallDataInterface
 {
     protected $_postFactory;
@@ -24,8 +28,11 @@ class InstallData implements InstallDataInterface
      * @param TransactionFactory $transactionFactory
      * @param LoggerInterface $logger
      */
-    public function __construct(\Thesis\QuickOrder\Model\StatusFactory $postFactory, TransactionFactory $transactionFactory, LoggerInterface $logger)
-    {
+    public function __construct(
+        \Thesis\QuickOrder\Model\StatusFactory $postFactory,
+        TransactionFactory $transactionFactory,
+        LoggerInterface $logger
+    ) {
         $this->transactionFactory = $transactionFactory;
         $this->_postFactory = $postFactory;
         $this->logger = $logger;

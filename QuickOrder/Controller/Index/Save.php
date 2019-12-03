@@ -6,7 +6,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 use Thesis\QuickOrder\Api\Model\Data\QuickOrderInterfaceFactory;
 use Thesis\QuickOrder\Api\Model\Data\StatusInterfaceFactory;
@@ -14,32 +13,40 @@ use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 use Thesis\QuickOrder\Model\ResourceModel\StatusFactory;
 use Thesis\QuickOrder\Model\Status;
 
+/**
+ * Class Save
+ * @package Thesis\QuickOrder\Controller\Index
+ */
 class Save extends Action
 {
     /**
      * @var QuickOrderRepositoryInterface
      */
     protected $repository;
+
     /**
      * @var QuickOrderInterfaceFactory
      */
     protected $orderModelFactory;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var StatusInterfaceFactory
      */
     private $statusModelFactory;
+
     /**
      * @var StatusFactory
      */
     protected $statusResourceFactory;
+
     /**
      * Save constructor.
      * @param Context $context
-     * @param PageFactory $resultPageFactory
      * @param StatusInterfaceFactory $statusModelFactory
      * @param StatusFactory $statusResourceFactory
      * @param QuickOrderRepositoryInterface $repository
@@ -48,7 +55,6 @@ class Save extends Action
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
         StatusInterfaceFactory $statusModelFactory,
         StatusFactory $statusResourceFactory,
         QuickOrderRepositoryInterface $repository,
@@ -62,19 +68,26 @@ class Save extends Action
         $this->logger                =  $logger;
         parent::__construct($context);
     }
+
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @throws \Zend_Validate_Exception
      */
     public function execute()
     {
         $params = $this->getRequest()->getParams();
+
         /**
          * @var Status $statusModel
          * @var AbstractModel $orderModel
          */
         $statusModel = $this->statusModelFactory->create();
 
-        $this->statusResourceFactory->create()->load($statusModel, "1", "is_default");
+        $this->statusResourceFactory->create()->load(
+            $statusModel,
+            "1",
+            "is_default"
+        );
 
         try {
             if (!\Zend_Validate::is(trim($params['name']), 'NotEmpty')) {
@@ -83,8 +96,12 @@ class Save extends Action
             if (!\Zend_Validate::is(trim($params['phone']), 'NotEmpty')) {
                 throw new LocalizedException(__('Enter the phone and try again.'));
             }
-            if (!\Zend_Validate::is(trim($params['email']), 'EmailAddress') && !empty($params['email'])) {
-                throw new LocalizedException(__('The email address is invalid. Verify the email address and try again.'));
+            if (!\Zend_Validate::is(trim(
+                $params['email']
+            ), 'EmailAddress') && !empty($params['email'])) {
+                throw new LocalizedException(
+                    __('The email address is invalid. Verify the email address and try again.')
+                );
             }
 
             $orderModel = $this->orderModelFactory->create();
@@ -95,10 +112,10 @@ class Save extends Action
             $orderModel->setEmail($params['email']);
 
             $this->repository->save($orderModel);
-            $this->messageManager->addSuccessMessage('Saved!');
+            $this->messageManager->addSuccessMessage('Your order has been successfully accepted');
         } catch (CouldNotSaveException $e) {
             $this->logger->error($e->getMessage());
-            $this->messageManager->addErrorMessage('Error');
+            $this->messageManager->addErrorMessage('Order failed to save');
         } catch (LocalizedException $e) {
             $this->logger->error($e->getMessage());
             $this->messageManager->addErrorMessage($e->getMessage());

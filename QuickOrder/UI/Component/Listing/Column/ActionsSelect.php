@@ -1,8 +1,11 @@
 <?php
+
 namespace Thesis\QuickOrder\UI\Component\Listing\Column;
 
-
-
+/**
+ * Class ActionsSelect
+ * @package Thesis\QuickOrder\UI\Component\Listing\Column
+ */
 class ActionsSelect implements \Magento\Framework\Option\ArrayInterface
 {
     /**

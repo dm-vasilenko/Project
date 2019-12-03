@@ -5,41 +5,46 @@ namespace Thesis\QuickOrder\Block;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\View\Element\Template;
 
+/**
+ * Class QuickOrder
+ * @package Thesis\QuickOrder\Block
+ */
 class QuickOrder extends Template
 {
     /**
      * @var Product
      */
-    protected $_product;
+    protected $product;
+
     /**
-     * QuickOrder constructor.
      * @param Template\Context $context
-     * @param Product $product
-     * @param array $data
+     * @param Product          $product
+     * @param array            $data
      */
-    public function __construct(Template\Context $context, Product $product, array $data = [])
-    {
+    public function __construct(
+        Template\Context $context,
+        Product $product,
+        array $data = []
+    ) {
         parent::__construct($context, $data);
-        $this->_product = $product;
+        $this->product = $product;
     }
+
     /**
      * @return string
      */
     public function getProductSku()
     {
-        $product = $this->_product;
-
-        $productSku = !empty($product) ? $product->getSku() : "";
-
-        return $productSku;
+        return $productSku = !empty($this->product) ? $this->product->getSku() : "";
     }
+
     /**
-     * @param $product
+     * @param  $product
      * @return $this
      */
     public function setProduct($product)
     {
-        $this->_product = $product;
+        $this->product = $product;
 
         return $this;
     }

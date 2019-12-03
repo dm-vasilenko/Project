@@ -5,6 +5,10 @@ namespace Thesis\QuickOrder\Controller\Adminhtml\Index;
 use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
 use Thesis\QuickOrder\Controller\Adminhtml\Status as BaseAction;
 
+/**
+ * Class StatusSave
+ * @package Thesis\QuickOrder\Controller\Adminhtml\Index
+ */
 class StatusSave extends BaseAction
 {
     /** {@inheritdoc} */
@@ -30,25 +34,14 @@ class StatusSave extends BaseAction
             $model->setData($formData);
 
             try {
-                $model = $this->repository->save($model);
+                $this->repository->save($model);
                 $this->messageManager->addSuccessMessage(__('Status has been saved.'));
-                if ($this->getRequest()->getParam('back')) {
-                    return $this->_redirect('*/*/statusedit', ['id' => $model->getId(), '_current' => true]);
-                }
-
                 return $this->redirectToGrid();
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $this->messageManager->addErrorMessage(__('Status doesn\'t save'));
             }
-
-            $this->_getSession()->setFormData($formData);
-
-            return (!empty($model->getId())) ?
-                $this->_redirect('*/*/statusedit', ['id' => $model->getId()])
-                : $this->_redirect('*/*/statuscreate');
         }
-
         return $this->doRefererRedirect();
     }
 }

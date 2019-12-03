@@ -8,7 +8,6 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
@@ -17,31 +16,38 @@ use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
 use Thesis\QuickOrder\Api\Model\StatusRepositoryInterface;
 use Thesis\QuickOrder\Model\StatusFactory;
 
+/**
+ * Class Status
+ * @package Thesis\QuickOrder\Controller\Adminhtml
+ */
 abstract class Status extends Action
 {
-    const ACL_RESOURCE          = 'Thesis_QuickOrder::all';
+    const ACL_RESOURCE          = 'Thesis_QuickOrder::status';
     const MENU_ITEM             = 'Thesis_QuickOrder::all';
     const PAGE_TITLE            = 'Quick Order';
     const BREADCRUMB_TITLE      = 'Quick Order';
     const QUERY_PARAM_ID        = 'id';
 
-    /** @var Registry  */
-    protected $registry;
     /** @var PageFactory  */
     protected $pageFactory;
+
     /** @var  StatusFactory */
     protected $modelFactory;
+
     /** @var StatusInterface */
     protected $model;
+
     /** @var Page */
     protected $resultPage;
+
     /** @var StatusRepositoryInterface */
     protected $repository;
+
     /** @var Logger */
     protected $logger;
+
     /**
      * @param Context                          $context
-     * @param Registry                         $registry
      * @param PageFactory                      $pageFactory
      * @param StatusRepositoryInterface        $statusRepository
      * @param StatusFactory                    $factory
@@ -49,13 +55,11 @@ abstract class Status extends Action
      */
     public function __construct(
         Context $context,
-        Registry $registry,
         PageFactory $pageFactory,
         StatusRepositoryInterface $statusRepository,
         StatusFactory $factory,
         LoggerInterface $logger
     ) {
-        $this->registry       = $registry;
         $this->pageFactory    = $pageFactory;
         $this->repository     = $statusRepository;
         $this->modelFactory   = $factory;
@@ -63,6 +67,7 @@ abstract class Status extends Action
 
         parent::__construct($context);
     }
+
     /** {@inheritdoc} */
     public function execute()
     {
@@ -70,6 +75,7 @@ abstract class Status extends Action
 
         return $this->resultPage;
     }
+
     /** {@inheritdoc} */
     protected function _isAllowed()
     {
@@ -78,6 +84,7 @@ abstract class Status extends Action
 
         return $result;
     }
+
     /**
      * @return Page
      */
@@ -89,6 +96,7 @@ abstract class Status extends Action
 
         return $this->resultPage;
     }
+
     /**
      * @return Order
      */
@@ -102,6 +110,7 @@ abstract class Status extends Action
 
         return $this;
     }
+
     /** @return StatusInterface */
     protected function getModel()
     {
@@ -111,6 +120,7 @@ abstract class Status extends Action
 
         return $this->model;
     }
+
     /**
      * @return ResultInterface
      */
@@ -121,6 +131,7 @@ abstract class Status extends Action
 
         return $redirect;
     }
+
     /**
      * @return ResponseInterface
      */

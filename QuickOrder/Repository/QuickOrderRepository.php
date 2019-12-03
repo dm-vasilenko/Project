@@ -18,6 +18,10 @@ use Thesis\QuickOrder\Api\Model\QuickOrderRepositoryInterface;
 use Thesis\QuickOrder\Model\ResourceModel\QuickOrder as ResourceModel;
 use Thesis\QuickOrder\Model\ResourceModel\QuickOrder\CollectionFactory;
 
+/**
+ * Class QuickOrderRepository
+ * @package Thesis\QuickOrder\Repository
+ */
 class QuickOrderRepository implements QuickOrderRepositoryInterface
 {
     /**

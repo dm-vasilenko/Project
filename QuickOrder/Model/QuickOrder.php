@@ -14,6 +14,10 @@ use Thesis\QuickOrder\Api\Model\Data\StatusInterface;
 use Thesis\QuickOrder\Api\Model\Schema\QuickOrderSchemaInterface;
 use Thesis\QuickOrder\Model\ResourceModel\QuickOrder as ResourceModel;
 
+/**
+ * Class QuickOrder
+ * @package Thesis\QuickOrder\Model
+ */
 class QuickOrder extends AbstractModel implements QuickOrderInterface
 {
     private $statusRepository;
@@ -46,6 +50,9 @@ class QuickOrder extends AbstractModel implements QuickOrderInterface
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
     }
 
+    /**
+     * @return void
+     */
     public function _construct()
     {
         $this->_init(ResourceModel::class);
